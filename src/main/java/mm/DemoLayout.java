@@ -1,6 +1,7 @@
 package mm;
 
 import mm.listeners.RefreshButtonListener;
+import mm.listeners.TableMouseListener;
 import mm.util.WordWrapCellRenderer;
 
 import java.awt.*;
@@ -90,6 +91,9 @@ public class DemoLayout {
     }
 
     public static void updateTablePanel() {
+        if (scrollPanel != null) {
+            tablePanel.remove(0);
+        }
         String[] columnNames = {"Package name", "Version", "Description"};
         List<Pkg> list = service.loadInstalledPkges();
         Object[][] data = new Object[list.size()][3];
@@ -103,19 +107,22 @@ public class DemoLayout {
             }
         };
         table.getTableHeader().setReorderingAllowed(false);
-        table.setRowSelectionAllowed(true);
+//table.setEnabled(false);
         table.getColumnModel().getColumn(0).setPreferredWidth(400);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(600);
 
         table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
 
+        table.getSelectionModel().addListSelectionListener(new TableMouseListener(table));
+
         scrollPanel = new JScrollPane(table);
 
         tablePanel.setLayout(new BorderLayout());
         tablePanel.add(scrollPanel, BorderLayout.CENTER);
         tablePanel.add(scrollPanel);
-        tablePanel.setBackground(Color.GREEN);
+
+        SwingUtilities.updateComponentTreeUI(mainFrame);
     }
 
     private static void addUpPanel() {
