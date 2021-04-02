@@ -3,9 +3,7 @@ package mm;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-// creating a class DemoLayout
 public class DemoLayout {
 
     private JFrame mainFrame;
@@ -29,26 +27,22 @@ public class DemoLayout {
 
     private JTextField pathField;
 
-    public DemoLayout()
-    {
+    public DemoLayout() {
         prepareGUI();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         DemoLayout DemoLayout = new DemoLayout();
         DemoLayout.showDemoLayout();
     }
 
-    private void prepareGUI()
-    {
+    private void prepareGUI() {
         mainFrame = new JFrame("vcpkg-gui");
         mainFrame.setSize(600, 600);
-        mainFrame.setMinimumSize(new Dimension(500,500));
+        mainFrame.setMinimumSize(new Dimension(500, 500));
         mainFrame.getContentPane().setBackground(Color.pink);
 
         mainFrame.getContentPane().setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.PAGE_AXIS));
-
 
         GroupLayout layout = new GroupLayout(mainFrame.getContentPane());
         mainFrame.getContentPane().setLayout(layout);
@@ -61,46 +55,35 @@ public class DemoLayout {
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(upPanel)
-                    .addComponent(tablePanel)
-                    .addComponent(pathPanel))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(upPanel)
+                                .addComponent(tablePanel)
+                                .addComponent(pathPanel))
         );
-
-
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
-                .addComponent(upPanel)
-                .addComponent(tablePanel)
-                .addComponent(pathPanel)
+                        .addComponent(upPanel)
+                        .addComponent(tablePanel)
+                        .addComponent(pathPanel)
         );
 
-
-        // to add action WindowListner in JFrame
-        mainFrame.addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent windowEvent)
-            {
+        mainFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
 
-
-        // Function to set the visible of JFrame.
-        mainFrame.setVisible(true);
     }
 
-    private void showDemoLayout()
-    {
-
+    private void showDemoLayout() {
         updateTablePanel();
         addUpPanel();
         addPathPanel();
         mainFrame.setVisible(true);
     }
 
-    private void updateTablePanel(){
+    private void updateTablePanel() {
 
         String[] columnNames = {"Package name",
                 "Version",
@@ -127,16 +110,13 @@ public class DemoLayout {
         tablePanel.setBackground(Color.GREEN);
     }
 
-    private void addUpPanel(){
-        upPanel.setPreferredSize(new Dimension(600,20));
-        upPanel.setMaximumSize(new Dimension(3000,20));
+    private void addUpPanel() {
+        upPanel.setPreferredSize(new Dimension(600, 20));
+        upPanel.setMaximumSize(new Dimension(3000, 20));
         GroupLayout layout = new GroupLayout(upPanel);
         upPanel.setLayout(layout);
-//        layout.setAutoCreateGaps(true);
-//        layout.setAutoCreateContainerGaps(true);
 
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         headerLabel = new JLabel("INSTALLED PACKAGES");
@@ -151,14 +131,14 @@ public class DemoLayout {
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
-                                .addComponent(headerPanel)
-                                .addComponent(buttonsPanel)
+                        .addComponent(headerPanel)
+                        .addComponent(buttonsPanel)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(headerPanel)
-                        .addComponent(buttonsPanel))
+                                .addComponent(headerPanel)
+                                .addComponent(buttonsPanel))
         );
     }
 
@@ -175,7 +155,6 @@ public class DemoLayout {
 
         pathButton = new JButton("set");
         pathPanel.add(pathButton);
-
 
         GroupLayout layout = new GroupLayout(pathPanel);
         layout.setAutoCreateGaps(true);
@@ -195,5 +174,4 @@ public class DemoLayout {
                                 .addComponent(pathButton))
         );
     }
-
 }
