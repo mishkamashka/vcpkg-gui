@@ -15,6 +15,10 @@ public class DemoLayout {
     // of JLabel class
     private JLabel headerLabel, statusLabel, msglabel;
 
+    private JButton refreshButton;
+    private JButton addButton;
+    private JButton removeButton;
+
     // Declaration of objects 
     // of JPanel class
     private JPanel upPanel;
@@ -51,6 +55,7 @@ public class DemoLayout {
         mainFrame.setLayout(new GridLayout(3, 1));
 
         upPanel = new JPanel();
+        upPanel.setSize(100,100);
         upPanel.setLayout(new GridLayout(1,2));
         mainFrame.add(upPanel);
 
@@ -83,6 +88,7 @@ public class DemoLayout {
     {
 
         updateTablePanel();
+        addUpPanel();
         // Creating Object of 
         // "Panel" class
 //        JPanel panel = new JPanel();
@@ -148,5 +154,26 @@ public class DemoLayout {
         table = new JTable(data, columnNames);
 //        table.
         tablePanel.add(new JScrollPane(table));
+    }
+
+    private void addUpPanel(){
+        headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout());
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout());
+
+        headerLabel = new JLabel("INSTALLED PACKAGES");
+        refreshButton = new JButton("↻");
+        headerPanel.add(headerLabel);
+        headerPanel.add(refreshButton);
+        upPanel.add(headerPanel);
+
+        addButton = new JButton("+");
+        removeButton = new JButton("-");
+        buttonsPanel.add(removeButton);
+        buttonsPanel.add(addButton);
+        upPanel.add(buttonsPanel);
+
     }
 }
