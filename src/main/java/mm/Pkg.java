@@ -1,7 +1,5 @@
 package mm;
 
-import com.sun.org.apache.xml.internal.utils.XMLStringFactory;
-
 public class Pkg {
     public final String name;
     public final String version;
@@ -29,4 +27,10 @@ public class Pkg {
     public String toString() {
         return this.name + " " + this.version + " " + this.description;
     }
+
+    public String[] toStringArray() {
+        return new String[]{this.name, this.version, this.description};
+    }
+
+
 }

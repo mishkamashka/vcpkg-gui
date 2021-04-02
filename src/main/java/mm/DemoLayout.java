@@ -1,31 +1,36 @@
 package mm;
 
+import mm.listeners.RefreshButtonListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.List;
 
 public class DemoLayout {
 
-    private JFrame mainFrame;
+    private static VcpkgService service = new VcpkgServiceImpl();
 
-    private JLabel headerLabel;
-    private JLabel pathLabel;
+    private static JFrame mainFrame;
 
-    private JButton refreshButton;
-    private JButton addButton;
-    private JButton removeButton;
-    private JButton pathButton;
+    private static JLabel headerLabel;
+    private static JLabel pathLabel;
 
-    private JPanel upPanel;
-    private JPanel headerPanel;
-    private JPanel buttonsPanel;
-    private JPanel tablePanel;
-    private JPanel pathPanel;
-    private JScrollPane scrollPanel;
+    private static JButton refreshButton;
+    private static JButton addButton;
+    private static JButton removeButton;
+    private static JButton pathButton;
 
-    private JTable table;
+    private static JPanel upPanel;
+    private static JPanel headerPanel;
+    private static JPanel buttonsPanel;
+    private static JPanel tablePanel;
+    private static JPanel pathPanel;
+    private static JScrollPane scrollPanel;
 
-    private JTextField pathField;
+    private static JTable table;
+
+    private static JTextField pathField;
 
     public DemoLayout() {
         prepareGUI();
@@ -83,25 +88,14 @@ public class DemoLayout {
         mainFrame.setVisible(true);
     }
 
-    private void updateTablePanel() {
-
-        String[] columnNames = {"Package name",
-                "Version",
-                "Description"};
-
-        Object[][] data = {
-                {"ffmpeg[avcodec]:x64-linux", "",
-                        "Codec support in ffmpeg"},
-                {"ffmpeg[avdevice]:x64-linux", "",
-                        "Device support in ffmpeg"},
-                {"argh:x64-linux", "2018-12-18-2",
-                        "Argh! A minimalist argument handler."},
-                {"ffmpeg:x64-linux", "4.3.2#1",
-                        "a library to decode, encode, transcode, mux, dem..."}
-        };
+    public static void updateTablePanel() {
+        String[] columnNames = {"Package name", "Version", "Description"};
+        List<Pkg> list = service.loadInstalledPkges();
+        Object[][] data = new Object[list.size()][3];
+        for (int i = 0; i < list.size(); i++)
+            data[i] = list.get(i).toStringArray();
 
         table = new JTable(data, columnNames);
-
         scrollPanel = new JScrollPane(table);
 
         tablePanel.setLayout(new BorderLayout());
@@ -110,7 +104,7 @@ public class DemoLayout {
         tablePanel.setBackground(Color.GREEN);
     }
 
-    private void addUpPanel() {
+    private static void addUpPanel() {
         upPanel.setPreferredSize(new Dimension(600, 20));
         upPanel.setMaximumSize(new Dimension(3000, 20));
         GroupLayout layout = new GroupLayout(upPanel);
@@ -121,6 +115,8 @@ public class DemoLayout {
 
         headerLabel = new JLabel("INSTALLED PACKAGES");
         refreshButton = new JButton("↻");
+        refreshButton.addActionListener(new RefreshButtonListener(mainFrame));
+
         headerPanel.add(headerLabel);
         headerPanel.add(refreshButton);
 
@@ -142,7 +138,7 @@ public class DemoLayout {
         );
     }
 
-    private void addPathPanel() {
+    private static void addPathPanel() {
         pathPanel.setPreferredSize(new Dimension(600, 30));
         pathPanel.setMaximumSize(new Dimension(3000, 30));
         pathLabel = new JLabel("vcpkg path:");
