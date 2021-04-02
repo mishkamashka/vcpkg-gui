@@ -1,12 +1,15 @@
 package mm;
 
-/**
- * Hello world!
- *
- */
+import java.util.List;
+
 public class App {
     public static void main( String[] args ) {
         VcpkgService service = new VcpkgServiceImpl();
-        service.testVcpkg();
+        String pkg = service.installPkg("bigint");
+        System.out.println(pkg);
+        List<Pkg> list = service.loadInstalledPkges();
+        list.forEach(p -> System.out.println(p.toString()));
+        pkg = service.removePkg("bigint");
+        System.out.println(pkg);
     }
 }
