@@ -50,22 +50,47 @@ public class DemoLayout {
     private void prepareGUI()
     {
         mainFrame = new JFrame("vcpkg-gui");
-        mainFrame.setSize(400, 400);
+        mainFrame.setSize(600, 600);
+        mainFrame.setMinimumSize(new Dimension(500,500));
 
-        mainFrame.setLayout(new GridLayout(3, 1));
+        GroupLayout layout = new GroupLayout(mainFrame.getContentPane());
+        mainFrame.getContentPane().setLayout(layout);
 
         upPanel = new JPanel();
-        upPanel.setSize(100,100);
-        upPanel.setLayout(new GridLayout(1,2));
-        mainFrame.add(upPanel);
+        mainFrame.add(upPanel, BorderLayout.NORTH);
+
+        headerPanel = new JPanel();
+        buttonsPanel = new JPanel();
 
         tablePanel = new JPanel();
-        tablePanel.setSize(200, 200);
-        mainFrame.add(tablePanel);
+//        tablePanel.setSize(500, 500);
+//        mainFrame.add(tablePanel, BorderLayout.CENTER);
 
         pathPanel = new JPanel();
         pathPanel.setLayout(new FlowLayout());
-        mainFrame.add(pathPanel);
+//        mainFrame.add(pathPanel, BorderLayout.SOUTH);
+
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(upPanel)
+                    .addComponent(tablePanel)
+                    .addComponent(pathPanel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(upPanel)
+                    .addComponent(tablePanel))
+        );
+
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                .addComponent(upPanel)
+                .addComponent(tablePanel)
+                .addComponent(pathPanel)
+        );
+
+
+
+
 
 
 
@@ -152,28 +177,54 @@ public class DemoLayout {
         };
 
         table = new JTable(data, columnNames);
+//        table.setSize(500, 500);
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 //        table.
-        tablePanel.add(new JScrollPane(table));
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.createVerticalScrollBar();
+        scrollPane.setWheelScrollingEnabled(true);
+        tablePanel.add(scrollPane);
+        tablePanel.setBackground(Color.GREEN);
     }
 
     private void addUpPanel(){
-        headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout());
+//        upPanel.setSize(100,100);
+        GroupLayout layout = new GroupLayout(upPanel);
+        upPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-        buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
+
+        headerPanel.setLayout(new FlowLayout());
+        headerPanel.setBackground(Color.red);
+
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.setBackground(Color.yellow);
 
         headerLabel = new JLabel("INSTALLED PACKAGES");
         refreshButton = new JButton("↻");
         headerPanel.add(headerLabel);
         headerPanel.add(refreshButton);
-        upPanel.add(headerPanel);
+//        upPanel.add(headerPanel);
 
         addButton = new JButton("+");
         removeButton = new JButton("-");
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
         upPanel.add(buttonsPanel);
+
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+
+                                .addComponent(headerPanel)
+                                .addComponent(buttonsPanel)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(headerPanel)
+                        .addComponent(buttonsPanel))
+        );
 
     }
 }
