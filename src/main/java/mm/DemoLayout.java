@@ -16,8 +16,8 @@ public class DemoLayout {
     private JButton refreshButton;
     private JButton addButton;
     private JButton removeButton;
+    private JButton pathButton;
 
-    private JPanel basicPanel;
     private JPanel upPanel;
     private JPanel headerPanel;
     private JPanel buttonsPanel;
@@ -26,6 +26,8 @@ public class DemoLayout {
     private JScrollPane scrollPanel;
 
     private JTable table;
+
+    private JTextField pathField;
 
     public DemoLayout()
     {
@@ -126,34 +128,29 @@ public class DemoLayout {
     }
 
     private void addUpPanel(){
-//        upPanel.setSize(100,100);
+        upPanel.setPreferredSize(new Dimension(600,20));
+        upPanel.setMaximumSize(new Dimension(3000,20));
         GroupLayout layout = new GroupLayout(upPanel);
         upPanel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+//        layout.setAutoCreateGaps(true);
+//        layout.setAutoCreateContainerGaps(true);
 
-
-        headerPanel.setLayout(new FlowLayout());
-        headerPanel.setBackground(Color.red);
+        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.setBackground(Color.yellow);
 
         headerLabel = new JLabel("INSTALLED PACKAGES");
         refreshButton = new JButton("↻");
         headerPanel.add(headerLabel);
         headerPanel.add(refreshButton);
-//        upPanel.add(headerPanel);
 
         addButton = new JButton("+");
         removeButton = new JButton("-");
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
-        upPanel.add(buttonsPanel);
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
-
                                 .addComponent(headerPanel)
                                 .addComponent(buttonsPanel)
         );
@@ -163,13 +160,40 @@ public class DemoLayout {
                         .addComponent(headerPanel)
                         .addComponent(buttonsPanel))
         );
-
     }
 
     private void addPathPanel() {
+        pathPanel.setPreferredSize(new Dimension(600, 30));
+        pathPanel.setMaximumSize(new Dimension(3000, 30));
         pathLabel = new JLabel("vcpkg path:");
         pathPanel.add(pathLabel);
-        pathPanel.setBackground(Color.BLUE);
+
+        pathField = new JTextField("/path/to/directory/vcpkg");
+        pathField.setPreferredSize(new Dimension(150, 20));
+        pathField.setMaximumSize(new Dimension(300, 20));
+        pathPanel.add(pathField);
+
+        pathButton = new JButton("set");
+        pathPanel.add(pathButton);
+
+
+        GroupLayout layout = new GroupLayout(pathPanel);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        pathPanel.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(pathLabel)
+                        .addComponent(pathField)
+                        .addComponent(pathButton)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(pathLabel)
+                                .addComponent(pathField)
+                                .addComponent(pathButton))
+        );
     }
 
 }
