@@ -1,6 +1,7 @@
 package mm;
 
 import mm.listeners.RefreshButtonListener;
+import mm.util.WordWrapCellRenderer;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -43,8 +44,8 @@ public class DemoLayout {
 
     private void prepareGUI() {
         mainFrame = new JFrame("vcpkg-gui");
-        mainFrame.setSize(600, 600);
-        mainFrame.setMinimumSize(new Dimension(500, 500));
+        mainFrame.setSize(new Dimension(800, 600));
+        mainFrame.setMinimumSize(new Dimension(600, 600));
         mainFrame.getContentPane().setBackground(Color.pink);
 
         mainFrame.getContentPane().setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -95,7 +96,20 @@ public class DemoLayout {
         for (int i = 0; i < list.size(); i++)
             data[i] = list.get(i).toStringArray();
 
-        table = new JTable(data, columnNames);
+        table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);
+        table.setRowSelectionAllowed(true);
+        table.getColumnModel().getColumn(0).setPreferredWidth(400);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(600);
+
+        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
+
         scrollPanel = new JScrollPane(table);
 
         tablePanel.setLayout(new BorderLayout());
