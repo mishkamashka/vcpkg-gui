@@ -3,47 +3,38 @@ package mm;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 // creating a class DemoLayout
 public class DemoLayout {
 
-    // Declaration of objects 
-    // of JFrame class
     private JFrame mainFrame;
 
-    // Declaration of objects 
-    // of JLabel class
-    private JLabel headerLabel, statusLabel, msglabel;
+    private JLabel headerLabel;
+    private JLabel pathLabel;
 
     private JButton refreshButton;
     private JButton addButton;
     private JButton removeButton;
 
-    // Declaration of objects 
-    // of JPanel class
+    private JPanel basicPanel;
     private JPanel upPanel;
     private JPanel headerPanel;
     private JPanel buttonsPanel;
     private JPanel tablePanel;
     private JPanel pathPanel;
+    private JScrollPane scrollPanel;
 
     private JTable table;
 
-    // create a class DemoLayout
     public DemoLayout()
     {
-
-        // used to prepare GUI
         prepareGUI();
     }
 
     public static void main(String[] args)
     {
-
-        // Creating Object of "DemoLayout" class
         DemoLayout DemoLayout = new DemoLayout();
-
-        // to show the group layout demo
         DemoLayout.showDemoLayout();
     }
 
@@ -52,23 +43,19 @@ public class DemoLayout {
         mainFrame = new JFrame("vcpkg-gui");
         mainFrame.setSize(600, 600);
         mainFrame.setMinimumSize(new Dimension(500,500));
+        mainFrame.getContentPane().setBackground(Color.pink);
+
+        mainFrame.getContentPane().setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.PAGE_AXIS));
+
 
         GroupLayout layout = new GroupLayout(mainFrame.getContentPane());
         mainFrame.getContentPane().setLayout(layout);
 
         upPanel = new JPanel();
-        mainFrame.add(upPanel, BorderLayout.NORTH);
-
         headerPanel = new JPanel();
         buttonsPanel = new JPanel();
-
         tablePanel = new JPanel();
-//        tablePanel.setSize(500, 500);
-//        mainFrame.add(tablePanel, BorderLayout.CENTER);
-
         pathPanel = new JPanel();
-        pathPanel.setLayout(new FlowLayout());
-//        mainFrame.add(pathPanel, BorderLayout.SOUTH);
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
@@ -76,10 +63,9 @@ public class DemoLayout {
                     .addComponent(upPanel)
                     .addComponent(tablePanel)
                     .addComponent(pathPanel))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(upPanel)
-                    .addComponent(tablePanel))
         );
+
+
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
@@ -87,12 +73,6 @@ public class DemoLayout {
                 .addComponent(tablePanel)
                 .addComponent(pathPanel)
         );
-
-
-
-
-
-
 
 
         // to add action WindowListner in JFrame
@@ -114,48 +94,7 @@ public class DemoLayout {
 
         updateTablePanel();
         addUpPanel();
-        // Creating Object of 
-        // "Panel" class
-//        JPanel panel = new JPanel();
-//
-//        // Function to set the size of JFrame.
-//        panel.setSize(200, 200);
-//
-//        // Creating Object of
-//        // "layout" class
-//        GroupLayout layout = new GroupLayout(panel);
-//
-//        // it used to set Auto
-//        // Create Gaps
-//        layout.setAutoCreateGaps(true);
-//
-//        // it used to set Auto
-//        // Create Container Gaps
-//        layout.setAutoCreateContainerGaps(true);
-//
-//        // Creating Object of
-//        // "btn2" class
-//        JButton btn2 = new JButton("Button 2");
-//
-//
-//        // It used to set the
-//        // Horizontal group
-//        layout.setHorizontalGroup(layout.createSequentialGroup()
-//
-//                // Adding the JButton "btn1"
-//                .addComponent(table));
-//
-//        // set the vertical layout group
-//        layout.setVerticalGroup(layout.createSequentialGroup()
-//
-//                // Adding the JButton "btn1"
-//                .addComponent(table));
-//
-//        // Function to set the Layout of JFrame.
-//        panel.setLayout(layout);
-//
-
-        // Function to set the visible of JFrame.
+        addPathPanel();
         mainFrame.setVisible(true);
     }
 
@@ -177,13 +116,12 @@ public class DemoLayout {
         };
 
         table = new JTable(data, columnNames);
-//        table.setSize(500, 500);
-//        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-//        table.
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.createVerticalScrollBar();
-        scrollPane.setWheelScrollingEnabled(true);
-        tablePanel.add(scrollPane);
+
+        scrollPanel = new JScrollPane(table);
+
+        tablePanel.setLayout(new BorderLayout());
+        tablePanel.add(scrollPanel, BorderLayout.CENTER);
+        tablePanel.add(scrollPanel);
         tablePanel.setBackground(Color.GREEN);
     }
 
@@ -227,4 +165,11 @@ public class DemoLayout {
         );
 
     }
+
+    private void addPathPanel() {
+        pathLabel = new JLabel("vcpkg path:");
+        pathPanel.add(pathLabel);
+        pathPanel.setBackground(Color.BLUE);
+    }
+
 }
