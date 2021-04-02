@@ -9,10 +9,11 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
+    String vcpkgPath = "/vcpkg/vcpkg";
 
     @Override
     public void testVcpkg(){
-        ProcessBuilder builder = createCommand("./vcpkg/vcpkg version");
+        ProcessBuilder builder = createCommand("." + vcpkgPath + " version");
         try {
             Process process = builder.start();
             final int exitCode = process.waitFor();
