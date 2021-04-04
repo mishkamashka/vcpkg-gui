@@ -82,6 +82,7 @@ public class VcpkgServiceImpl implements VcpkgService {
                 while((line = reader.readLine()) != null)
                     if (Pattern.compile("The following packages are already installed:").matcher(line).find()) {
                         result = new StringBuilder("The following packages are already installed: ").append(name).append(".");
+                        exitCode = -5;
                         break;
                     }
             }

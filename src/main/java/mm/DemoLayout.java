@@ -63,7 +63,7 @@ public class DemoLayout {
         downPanel = new JPanel();
         installationPanel = new JPanel();
         pathPanel = new JPanel();
-        installationLabel = new JLabel("label");
+        installationLabel = new JLabel();
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
@@ -194,7 +194,6 @@ public class DemoLayout {
 
         pathButton = new JButton("set");
         pathPanel.add(pathButton);
-        pathPanel.setBackground(Color.yellow);
 
         layout = new GroupLayout(pathPanel);
         layout.setAutoCreateGaps(true);

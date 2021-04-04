@@ -23,6 +23,8 @@ public class AddButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String name = JOptionPane.showInputDialog(frame,"Package name to install:");
+        if (name == null || name.equals(""))
+            return;
         installationLabel.setText("Installing...");
         frame.setVisible(true);
 
@@ -31,10 +33,12 @@ public class AddButtonListener implements ActionListener {
                 OperationResult result = service.installPkg(name);
                 SwingUtilities.invokeLater(new Runnable(){
                     public void run() {
+                        installationLabel.setText("");
                         if (result.exitCode != 0) {
+                            if (result.exitCode == -5)
+                                JOptionPane.showMessageDialog(frame, result.result);
                             //TODO show error msg
                         } else {
-                            installationLabel.setText("");
                             JOptionPane.showMessageDialog(frame, "Package " + name + " has been installed");
                             DemoLayout.updateTablePanel();
                             frame.setVisible(true);
