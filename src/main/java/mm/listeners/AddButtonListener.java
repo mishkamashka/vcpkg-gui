@@ -34,7 +34,5 @@ public class AddButtonListener implements ActionListener {
             }
         }, "installing package");
         t.start();
-
     }
-
 }

@@ -1,5 +1,6 @@
 package mm.listeners;
 
+import mm.DemoLayout;
 import mm.OperationResult;
 import mm.VcpkgService;
 
@@ -21,19 +22,36 @@ public class RemoveButtonListener implements ActionListener {
         this.table = table;
     }
 
+    //TODO fix removing while installing in progress error (find out why it occurs st least..)
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1)
             return;
         String name = (String) table.getValueAt(selectedRow, 0);
-        processLabel.setText("Removing...");
+//        processLabel.setText("Removing...");
         frame.setVisible(true);
 
+        if (processLabel.getText().equals("Installing...")) {
+            JOptionPane.showMessageDialog(frame, "Please wait for the installation process to finish.");
+            return;
+        }
         Thread t = new Thread(new Runnable() {
             public void run() {
                 OperationResult result = service.removePkg(name);
-                VcpkgCaller.vcpkgCall(result, processLabel, frame);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+//                        processLabel.setText("");
+                        if (result.exitCode == 0) {
+                            DemoLayout.updateTablePanel();
+                            frame.setVisible(true);
+
+                        }
+                        JOptionPane.showMessageDialog(frame, result.result);
+                    }
+                });
+//                VcpkgCaller.vcpkgCall(result, processLabel, frame);
             }
         }, "removing package");
         t.start();

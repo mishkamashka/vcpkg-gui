@@ -77,12 +77,11 @@ public class VcpkgServiceImpl implements VcpkgService {
                 while((line = reader.readLine()) != null) {
                     result.append(line).append("\n");
                 }
-            } else { //TODO probably need to tell if it had been already installed or just been installed
+            } else {
                 result = new StringBuilder("Package ").append(name).append(" has been installed.");
                 while((line = reader.readLine()) != null)
                     if (Pattern.compile("The following packages are already installed:").matcher(line).find()) {
                         result = new StringBuilder("The following packages are already installed: ").append(name).append(".");
-                        exitCode = -5;
                         break;
                     }
             }
@@ -94,6 +93,11 @@ public class VcpkgServiceImpl implements VcpkgService {
         return new OperationResult(exitCode, result.toString());
     }
 
+    /**
+     *
+     * @param name - package name
+     * @return OperationResult - exitCode: 0 - success, -2 - exception in vcpkg interaction, other - vcpkg error
+     */
     @Override
     public OperationResult removePkg(String name) {
         ProcessBuilder builder = createCommand("./vcpkg/vcpkg remove " + name);

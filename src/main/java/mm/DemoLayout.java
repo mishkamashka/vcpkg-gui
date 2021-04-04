@@ -7,6 +7,8 @@ import mm.listeners.RemoveButtonListener;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.List;
 
 public class DemoLayout {
@@ -96,9 +98,23 @@ public class DemoLayout {
         mainFrame.setVisible(true);
     }
 
+    private static void updateModel() {
+        TableModel tableModel = table.getModel();
+        List<Pkg> list = service.loadInstalledPkges();
+        String[] pkg;
+        for (int i = 0; i < list.size()-1; i++) {
+            pkg = list.get(i).toStringArray();
+            tableModel.setValueAt(pkg[0], i, 0);
+            tableModel.setValueAt(pkg[1], i, 1);
+            tableModel.setValueAt(pkg[2], i, 2);
+        }
+        table.setModel(tableModel);
+    }
+
     public static void updateTablePanel() {
-        if (scrollPanel != null) {
-            tablePanel.remove(0);
+        if (table != null) {
+            updateModel();
+            return;
         }
         String[] columnNames = {"Package name", "Version", "Description"};
         List<Pkg> list = service.loadInstalledPkges();
@@ -118,7 +134,6 @@ public class DemoLayout {
         table.getColumnModel().getColumn(2).setPreferredWidth(600);
 
         //TODO add text wrapping for description
-        //TODO add scroll
 //        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
 
         scrollPanel = new JScrollPane(table);
@@ -148,7 +163,7 @@ public class DemoLayout {
         addButton = new JButton("+");
         addButton.addActionListener(new AddButtonListener(mainFrame, service, processLabel));
         removeButton = new JButton("-");
-removeButton.addActionListener(new RemoveButtonListener(mainFrame, service, processLabel, table));
+        removeButton.addActionListener(new RemoveButtonListener(mainFrame, service, processLabel, table));
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
 

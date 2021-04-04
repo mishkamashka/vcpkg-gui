@@ -11,13 +11,12 @@ public class VcpkgCaller {
             public void run() {
                 processLabel.setText("");
                 if (result.exitCode != 0) {
-                    if (result.exitCode == -5)
-                        JOptionPane.showMessageDialog(frame, result.result);
-                    //TODO show error msg
+                    JOptionPane.showMessageDialog(frame, result.result);
                 } else {
                     DemoLayout.updateTablePanel();
                     JOptionPane.showMessageDialog(frame, result.result);
                 }
+                frame.setVisible(true);
             }
         });
     }
