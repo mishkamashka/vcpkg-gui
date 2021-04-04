@@ -19,8 +19,8 @@ public class App {
 
     static void vcpkgUsage() {
         VcpkgService service = new VcpkgServiceImpl();
-        String pkg = service.installPkg("bigint");
-        System.out.println(pkg);
+        OperationResult pkg = service.installPkg("bigint");
+        System.out.println(pkg.result);
         List<Pkg> list = service.loadInstalledPkges();
         list.forEach(p -> System.out.println(p.toString()));
         pkg = service.removePkg("bigint");

@@ -8,8 +8,8 @@ public interface VcpkgService {
 
     List<Pkg> loadInstalledPkges();
 
-    String installPkg(String name);
+    OperationResult installPkg(String name);
 
-    String removePkg(String name);
+    OperationResult removePkg(String name);
 
 }

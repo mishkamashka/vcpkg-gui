@@ -1,8 +1,7 @@
 package mm;
 
+import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
-import mm.listeners.TableMouseListener;
-import mm.util.WordWrapCellRenderer;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,12 +10,13 @@ import java.util.List;
 
 public class DemoLayout {
 
-    private static VcpkgService service = new VcpkgServiceImpl();
+    private static final VcpkgService service = new VcpkgServiceImpl();
 
     private static JFrame mainFrame;
 
     private static JLabel headerLabel;
     private static JLabel pathLabel;
+    private static JLabel installationLabel;
 
     private static JButton refreshButton;
     private static JButton addButton;
@@ -27,7 +27,9 @@ public class DemoLayout {
     private static JPanel headerPanel;
     private static JPanel buttonsPanel;
     private static JPanel tablePanel;
+    private static JPanel downPanel;
     private static JPanel pathPanel;
+    private static JPanel installationPanel;
     private static JScrollPane scrollPanel;
 
     private static JTable table;
@@ -58,21 +60,24 @@ public class DemoLayout {
         headerPanel = new JPanel();
         buttonsPanel = new JPanel();
         tablePanel = new JPanel();
+        downPanel = new JPanel();
+        installationPanel = new JPanel();
         pathPanel = new JPanel();
+        installationLabel = new JLabel("label");
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(upPanel)
                                 .addComponent(tablePanel)
-                                .addComponent(pathPanel))
+                                .addComponent(downPanel))
         );
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                         .addComponent(upPanel)
                         .addComponent(tablePanel)
-                        .addComponent(pathPanel)
+                        .addComponent(downPanel)
         );
 
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -107,14 +112,13 @@ public class DemoLayout {
             }
         };
         table.getTableHeader().setReorderingAllowed(false);
-//table.setEnabled(false);
         table.getColumnModel().getColumn(0).setPreferredWidth(400);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(600);
 
-        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
-
-        table.getSelectionModel().addListSelectionListener(new TableMouseListener(table));
+        //TODO add text wrapping for description
+        //TODO add scroll
+//        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
 
         scrollPanel = new JScrollPane(table);
 
@@ -142,6 +146,7 @@ public class DemoLayout {
         headerPanel.add(refreshButton);
 
         addButton = new JButton("+");
+        addButton.addActionListener(new AddButtonListener(mainFrame, service, installationLabel));
         removeButton = new JButton("-");
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
@@ -160,6 +165,23 @@ public class DemoLayout {
     }
 
     private static void addPathPanel() {
+        GroupLayout layout = new GroupLayout(downPanel);
+        downPanel.setPreferredSize(new Dimension(600, 30));
+        downPanel.setMaximumSize(new Dimension(3000, 30));
+        downPanel.setLayout(layout);
+
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(pathPanel)
+                        .addComponent(installationPanel)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(pathPanel)
+                                .addComponent(installationPanel))
+        );
+
         pathPanel.setPreferredSize(new Dimension(600, 30));
         pathPanel.setMaximumSize(new Dimension(3000, 30));
         pathLabel = new JLabel("vcpkg path:");
@@ -172,8 +194,9 @@ public class DemoLayout {
 
         pathButton = new JButton("set");
         pathPanel.add(pathButton);
+        pathPanel.setBackground(Color.yellow);
 
-        GroupLayout layout = new GroupLayout(pathPanel);
+        layout = new GroupLayout(pathPanel);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         pathPanel.setLayout(layout);
@@ -190,5 +213,16 @@ public class DemoLayout {
                                 .addComponent(pathField)
                                 .addComponent(pathButton))
         );
+
+        installationPanel.setLayout(new BorderLayout());
+        installationLabel.setHorizontalAlignment(JLabel.CENTER);
+        installationLabel.setVerticalAlignment(JLabel.CENTER);
+        installationPanel.add(installationLabel);
+
+    }
+
+    public static void updateLabel() {
+        installationLabel.setText("installing...");
+        mainFrame.setVisible(true);
     }
 }

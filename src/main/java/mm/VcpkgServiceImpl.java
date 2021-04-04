@@ -9,7 +9,7 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-    String vcpkgPath = "/vcpkg/vcpkg";
+    private String vcpkgPath = "/vcpkg/vcpkg";
 
     @Override
     public void testVcpkg(){
@@ -63,14 +63,16 @@ public class VcpkgServiceImpl implements VcpkgService {
     }
 
     @Override
-    public String installPkg(String name) {
+    public OperationResult installPkg(String name) {
         ProcessBuilder builder = createCommand("./vcpkg/vcpkg install " + name);
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder("Exception in service.");
+        int exitCode = -2;
         try {
             Process process = builder.start();
-            final int exitCode = process.waitFor();
+            exitCode = process.waitFor();
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            result = new StringBuilder("");
             if (exitCode != 0) {
                 while((line = reader.readLine()) != null) {
                     result.append(line).append("\n");
@@ -88,19 +90,21 @@ public class VcpkgServiceImpl implements VcpkgService {
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
-        return result.toString();
+        return new OperationResult(exitCode, result.toString());
     }
 
     @Override
-    public String removePkg(String name) {
+    public OperationResult removePkg(String name) {
         ProcessBuilder builder = createCommand("./vcpkg/vcpkg remove " + name);
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder("Exception in service.");
+        int exitCode = -2;
         try {
             Process process = builder.start();
-            final int exitCode = process.waitFor();
+            exitCode = process.waitFor();
             String line;
             BufferedReader reader;
             reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            result = new StringBuilder("");
             if (exitCode != 0) {
                 while((line = reader.readLine()) != null) {
                     result.append(line).append("\n");
@@ -118,7 +122,7 @@ public class VcpkgServiceImpl implements VcpkgService {
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
-        return result.toString();
+        return new OperationResult(exitCode, result.toString());
     }
 
     private ProcessBuilder createCommand(String command) {
@@ -130,5 +134,14 @@ public class VcpkgServiceImpl implements VcpkgService {
         }
         builder.directory(new File(System.getProperty("user.home")));
         return builder;
+    }
+
+    public String getVcpkgPath() {
+        return vcpkgPath;
+    }
+
+    public void setVcpkgPath(String vcpkgPath) {
+        //TODO check if vcpkg is there
+        this.vcpkgPath = vcpkgPath;
     }
 }
