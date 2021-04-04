@@ -39,14 +39,14 @@ public class AddButtonListener implements ActionListener {
                                 JOptionPane.showMessageDialog(frame, result.result);
                             //TODO show error msg
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Package " + name + " has been installed");
+                            JOptionPane.showMessageDialog(frame, result.result);
                             DemoLayout.updateTablePanel();
                             frame.setVisible(true);
                         }
                     }
                 });
             }
-        }, "Logic Code");
+        }, "installing package");
         t.start();
 
     }
