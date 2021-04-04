@@ -62,6 +62,11 @@ public class VcpkgServiceImpl implements VcpkgService {
         return pkges;
     }
 
+    /**
+     *
+     * @param name
+     * @return exitCode: 0 - success, -2 - exception in vcpkg interaction, -3 - recursive remove needed, other - other vcpkg error.
+     */
     @Override
     public OperationResult installPkg(String name) {
         ProcessBuilder builder = createCommand("./vcpkg/vcpkg install " + name);
@@ -90,7 +95,7 @@ public class VcpkgServiceImpl implements VcpkgService {
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
-        return new OperationResult(exitCode, result.toString());
+        return new OperationResult(exitCode, result.toString(), name);
     }
 
     /**
@@ -113,6 +118,10 @@ public class VcpkgServiceImpl implements VcpkgService {
             if (exitCode != 0) {
                 while((line = reader.readLine()) != null) {
                     result.append(line).append("\n");
+                    if (Pattern.compile("If you are sure you want to remove them, run the command with the --recurse option").matcher(line).find()){
+                        exitCode = -3;
+                        break;
+                    }
                 }
             } else {
                 result = new StringBuilder("Package ").append(name).append(" has been removed.");
@@ -127,7 +136,34 @@ public class VcpkgServiceImpl implements VcpkgService {
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
-        return new OperationResult(exitCode, result.toString());
+        return new OperationResult(exitCode, result.toString(), name);
+    }
+
+    @Override
+    public OperationResult removePkgRecursively(String name) {
+        ProcessBuilder builder = createCommand("./vcpkg/vcpkg remove --recurse " + name);
+        StringBuilder result = new StringBuilder("Exception in service.");
+        int exitCode = -2;
+        try {
+            Process process = builder.start();
+            exitCode = process.waitFor();
+            String line;
+            BufferedReader reader;
+            reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            result = new StringBuilder("");
+            if (exitCode != 0) {
+                while((line = reader.readLine()) != null) {
+                    result.append(line).append("\n");
+                }
+            } else {
+                result = new StringBuilder("Package ").append(name).append(" has been removed.");
+            }
+            reader.close();
+            System.out.println(exitCode);
+        } catch (IOException | InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        return new OperationResult(exitCode, result.toString(), name);
     }
 
     private ProcessBuilder createCommand(String command) {

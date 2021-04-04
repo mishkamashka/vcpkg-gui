@@ -141,7 +141,6 @@ public class DemoLayout {
         tablePanel.setLayout(new BorderLayout());
         tablePanel.add(scrollPanel, BorderLayout.CENTER);
         tablePanel.add(scrollPanel);
-
     }
 
     private static void addUpPanel() {
@@ -155,14 +154,17 @@ public class DemoLayout {
 
         headerLabel = new JLabel("INSTALLED PACKAGES");
         refreshButton = new JButton("↻");
+        refreshButton.setFocusPainted(false);
         refreshButton.addActionListener(new RefreshButtonListener(mainFrame));
 
         headerPanel.add(headerLabel);
         headerPanel.add(refreshButton);
 
         addButton = new JButton("+");
+        addButton.setFocusPainted(false);
         addButton.addActionListener(new AddButtonListener(mainFrame, service, processLabel));
         removeButton = new JButton("-");
+        removeButton.setFocusPainted(false);
         removeButton.addActionListener(new RemoveButtonListener(mainFrame, service, processLabel, table));
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
@@ -209,6 +211,7 @@ public class DemoLayout {
         pathPanel.add(pathField);
 
         pathButton = new JButton("set");
+        pathButton.setFocusPainted(false);
         pathPanel.add(pathButton);
 
         layout = new GroupLayout(pathPanel);

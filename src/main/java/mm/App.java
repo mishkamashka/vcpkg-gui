@@ -7,14 +7,20 @@ public class App {
 
     public static void main(String args[]){
         JFrame frame = new JFrame("My First GUI");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300,300);
-        JButton button1 = new JButton("Button 1");
-        JButton button2 = new JButton("Button 2");
-        frame.getContentPane().add(button1);
-        frame.getContentPane().add(button2);
+        Object[] options = {"Yes, please",
+                "No, thanks",
+                "No eggs, no ham!"};
+        int res = JOptionPane.showOptionDialog(frame,
+                "Would you like some green eggs to go "
+                        + "with that ham?",
+                "A Silly Question",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]);
 
-        frame.setVisible(true);
+        System.out.println(res);
     }
 
     static void vcpkgUsage() {

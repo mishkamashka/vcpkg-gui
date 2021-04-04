@@ -25,7 +25,6 @@ public class AddButtonListener implements ActionListener {
         if (name == null || name.equals(""))
             return;
         processLabel.setText("Installing...");
-        frame.setVisible(true);
 
         Thread t = new Thread(new Runnable() {
             public void run() {

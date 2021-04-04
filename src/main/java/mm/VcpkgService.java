@@ -12,4 +12,6 @@ public interface VcpkgService {
 
     OperationResult removePkg(String name);
 
+    OperationResult removePkgRecursively(String name);
+
 }
