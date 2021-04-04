@@ -2,6 +2,7 @@ package mm;
 
 import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
+import mm.listeners.RemoveButtonListener;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -16,7 +17,7 @@ public class DemoLayout {
 
     private static JLabel headerLabel;
     private static JLabel pathLabel;
-    private static JLabel installationLabel;
+    private static JLabel processLabel;
 
     private static JButton refreshButton;
     private static JButton addButton;
@@ -29,7 +30,7 @@ public class DemoLayout {
     private static JPanel tablePanel;
     private static JPanel downPanel;
     private static JPanel pathPanel;
-    private static JPanel installationPanel;
+    private static JPanel processPanel;
     private static JScrollPane scrollPanel;
 
     private static JTable table;
@@ -61,9 +62,9 @@ public class DemoLayout {
         buttonsPanel = new JPanel();
         tablePanel = new JPanel();
         downPanel = new JPanel();
-        installationPanel = new JPanel();
+        processPanel = new JPanel();
         pathPanel = new JPanel();
-        installationLabel = new JLabel();
+        processLabel = new JLabel();
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
@@ -126,7 +127,6 @@ public class DemoLayout {
         tablePanel.add(scrollPanel, BorderLayout.CENTER);
         tablePanel.add(scrollPanel);
 
-        SwingUtilities.updateComponentTreeUI(mainFrame);
     }
 
     private static void addUpPanel() {
@@ -146,8 +146,9 @@ public class DemoLayout {
         headerPanel.add(refreshButton);
 
         addButton = new JButton("+");
-        addButton.addActionListener(new AddButtonListener(mainFrame, service, installationLabel));
+        addButton.addActionListener(new AddButtonListener(mainFrame, service, processLabel));
         removeButton = new JButton("-");
+removeButton.addActionListener(new RemoveButtonListener(mainFrame, service, processLabel, table));
         buttonsPanel.add(removeButton);
         buttonsPanel.add(addButton);
 
@@ -173,13 +174,13 @@ public class DemoLayout {
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         .addComponent(pathPanel)
-                        .addComponent(installationPanel)
+                        .addComponent(processPanel)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(pathPanel)
-                                .addComponent(installationPanel))
+                                .addComponent(processPanel))
         );
 
         pathPanel.setPreferredSize(new Dimension(600, 30));
@@ -213,10 +214,10 @@ public class DemoLayout {
                                 .addComponent(pathButton))
         );
 
-        installationPanel.setLayout(new BorderLayout());
-        installationLabel.setHorizontalAlignment(JLabel.CENTER);
-        installationLabel.setVerticalAlignment(JLabel.CENTER);
-        installationPanel.add(installationLabel);
+        processPanel.setLayout(new BorderLayout());
+        processLabel.setHorizontalAlignment(JLabel.CENTER);
+        processLabel.setVerticalAlignment(JLabel.CENTER);
+        processPanel.add(processLabel);
 
     }
 }
