@@ -219,9 +219,4 @@ public class DemoLayout {
         installationPanel.add(installationLabel);
 
     }
-
-    public static void updateLabel() {
-        installationLabel.setText("installing...");
-        mainFrame.setVisible(true);
-    }
 }
