@@ -3,6 +3,7 @@ package mm.listeners;
 import mm.DemoLayout;
 import mm.OperationResult;
 import mm.VcpkgService;
+import mm.VcpkgServiceImpl;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,18 @@ public class RemoveButtonListener implements ActionListener {
         if (selectedRow == -1)
             return;
         String name = (String) table.getValueAt(selectedRow, 0);
+
+        Object[] options = {"Remove", "Cancel"};
+        int n = JOptionPane.showOptionDialog(frame,
+                "Remove " + name + " package?",
+                "Remove package",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[1]);
+        if (n == 1)
+            return;
 
         //TODO fix removing while installing in progress error (find out why it occurs at least..)
         if (processLabel.getText().equals("Installing...")) {
