@@ -9,14 +9,24 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-    private String vcpkgPath = "/vcpkg/vcpkg";
+    private String path = "/vcpkg/vcpkg";
 
     @Override
-    public void testVcpkg(){
-        ProcessBuilder builder = createCommand("." + vcpkgPath + " version");
+    public void testVcpkg(String vcpkgPath){
+        ProcessBuilder builder = createCommand(vcpkgPath + " version");
         try {
             Process process = builder.start();
-            final int exitCode = process.waitFor();
+            int exitCode = process.waitFor();
+            System.out.println(exitCode);
+            if (exitCode != 0) {
+                builder = createCommand(vcpkgPath + "/vcpkg version");
+                process = builder.start();
+                exitCode = process.waitFor();
+                System.out.println(exitCode);
+            }
+
+            //todo if exitcode==0 -> set path and return path(to set it to field) and success, otherwise return failure
+
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while((line = reader.readLine()) != null) {
@@ -177,12 +187,12 @@ public class VcpkgServiceImpl implements VcpkgService {
         return builder;
     }
 
-    public String getVcpkgPath() {
-        return vcpkgPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setVcpkgPath(String vcpkgPath) {
+    public void setPath(String path) {
         //TODO check if vcpkg is there
-        this.vcpkgPath = vcpkgPath;
+        this.path = path;
     }
 }

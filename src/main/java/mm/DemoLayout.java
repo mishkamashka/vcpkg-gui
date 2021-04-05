@@ -3,6 +3,7 @@ package mm;
 import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
 import mm.listeners.RemoveButtonListener;
+import mm.listeners.SetPathButtonListener;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -38,6 +39,8 @@ public class DemoLayout {
     private static JTable table;
 
     private static JTextField pathField;
+
+    private static String vcpkgPath = "/path/to/vcpkg";
 
     public DemoLayout() {
         prepareGUI();
@@ -205,12 +208,14 @@ public class DemoLayout {
         pathLabel = new JLabel("vcpkg path:");
         pathPanel.add(pathLabel);
 
-        pathField = new JTextField("/path/to/directory/vcpkg");
+        pathField = new JTextField(vcpkgPath);
+        pathField.setEditable(false);
         pathField.setPreferredSize(new Dimension(150, 20));
         pathField.setMaximumSize(new Dimension(300, 20));
         pathPanel.add(pathField);
 
-        pathButton = new JButton("set");
+        pathButton = new JButton("edit");
+        pathButton.addActionListener(new SetPathButtonListener(mainFrame, pathButton, pathField, vcpkgPath, service));
         pathButton.setFocusPainted(false);
         pathPanel.add(pathButton);
 

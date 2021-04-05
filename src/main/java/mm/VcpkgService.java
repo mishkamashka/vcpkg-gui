@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface VcpkgService {
 
-    void testVcpkg();
+    void testVcpkg(String vcpkgPath);
 
     List<Pkg> loadInstalledPkges();
 
