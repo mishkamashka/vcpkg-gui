@@ -14,4 +14,6 @@ $ mvn install
 ## Set up and run
 vcpkg-gui requires a pre-installed vcpkg tool. The app gets vcpkg location from a VCPKG_PATH environment variable or askes to enter it. Consider setting the variable not to enter the path every time the app starts.
 
-```$ java -jar target/vcpkg-gui.jar```
+```
+$ java -jar target/vcpkg-gui.jar
+```
