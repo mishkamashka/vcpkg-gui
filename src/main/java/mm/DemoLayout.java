@@ -1,5 +1,6 @@
 package mm;
 
+import jdk.nashorn.internal.scripts.JO;
 import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
 import mm.listeners.RemoveButtonListener;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.List;
+import java.util.Map;
 
 public class DemoLayout {
 
@@ -39,8 +41,6 @@ public class DemoLayout {
     private static JTable table;
 
     private static JTextField pathField;
-
-    private static String vcpkgPath = "/path/to/vcpkg";
 
     public DemoLayout() {
         prepareGUI();
@@ -95,6 +95,7 @@ public class DemoLayout {
     }
 
     private void showDemoLayout() {
+        findVcpkg();
         updateTablePanel();
         addUpPanel();
         addPathPanel();
@@ -115,6 +116,13 @@ public class DemoLayout {
     }
 
     public static void updateTablePanel() {
+        if (service.getPath().equals("")) {
+            pathField.setEditable(true);
+            pathButton.setText("ok");
+            mainFrame.setVisible(true);
+            JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
+            return;
+        }
         if (table != null) {
             updateModel();
             return;
@@ -122,6 +130,10 @@ public class DemoLayout {
         String[] columnNames = {"Package name", "Version", "Description"};
         List<Pkg> list = service.loadInstalledPkges();
         Object[][] data = new Object[list.size()][3];
+        if (list.size() == 0) {
+            data = new Object[1][3];
+            data[0] = new Object[]{"", "", ""};
+        }
         for (int i = 0; i < list.size(); i++)
             data[i] = list.get(i).toStringArray();
 
@@ -208,14 +220,14 @@ public class DemoLayout {
         pathLabel = new JLabel("vcpkg path:");
         pathPanel.add(pathLabel);
 
-        pathField = new JTextField(vcpkgPath);
+        pathField = new JTextField(service.getPath());
         pathField.setEditable(false);
         pathField.setPreferredSize(new Dimension(150, 20));
         pathField.setMaximumSize(new Dimension(300, 20));
         pathPanel.add(pathField);
 
         pathButton = new JButton("edit");
-        pathButton.addActionListener(new SetPathButtonListener(mainFrame, pathButton, pathField, vcpkgPath, service));
+        pathButton.addActionListener(new SetPathButtonListener(mainFrame, pathButton, pathField, service));
         pathButton.setFocusPainted(false);
         pathPanel.add(pathButton);
 
@@ -242,5 +254,16 @@ public class DemoLayout {
         processLabel.setVerticalAlignment(JLabel.CENTER);
         processPanel.add(processLabel);
 
+    }
+
+    private static void findVcpkg() {
+        String env = System.getenv("VCPKG_PATH");
+        if (env == null)
+            return;
+        service.testVcpkgPath(env);
+
+//        if (result.exitCode == 0)
+//            service.setPath
+//        System.out.println(env);
     }
 }

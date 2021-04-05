@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface VcpkgService {
 
-    void testVcpkg(String vcpkgPath);
+    OperationResult testVcpkgPath(String vcpkgPath);
 
     List<Pkg> loadInstalledPkges();
 
@@ -13,5 +13,7 @@ public interface VcpkgService {
     OperationResult removePkg(String name);
 
     OperationResult removePkgRecursively(String name);
+
+    String getPath();
 
 }

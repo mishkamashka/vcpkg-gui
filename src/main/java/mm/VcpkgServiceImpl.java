@@ -9,10 +9,14 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-    private String path = "/vcpkg/vcpkg";
+    private String path = "";
+
+    //todo try to find vcpkg directory in home when started (prbly ask user to set a vcpkg_path or put vcpkg directory to home)
+
 
     @Override
-    public void testVcpkg(String vcpkgPath){
+    public OperationResult testVcpkgPath(String vcpkgPath){
+        StringBuilder result = new StringBuilder(vcpkgPath);
         ProcessBuilder builder = createCommand(vcpkgPath + " version");
         try {
             Process process = builder.start();
@@ -20,28 +24,26 @@ public class VcpkgServiceImpl implements VcpkgService {
             System.out.println(exitCode);
             if (exitCode != 0) {
                 builder = createCommand(vcpkgPath + "/vcpkg version");
+                result.append("/vcpkg");
                 process = builder.start();
                 exitCode = process.waitFor();
-                System.out.println(exitCode);
+                if (exitCode != 0)
+                    return new OperationResult(-1, "vcpkg is not found. Check vcpkg installation location and try again.\n" +
+                            "You can as well set a VCPKG_PATH environment variable and restart the program.", vcpkgPath);
             }
-
-            //todo if exitcode==0 -> set path and return path(to set it to field) and success, otherwise return failure
-
-            String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            while((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-            reader.close();
-            System.out.println(exitCode);
+            path = result.toString();
+            return new OperationResult(0, "vcpkg is successfully found.\n" +
+                    "Consider setting a VCPKG_PATH environment variable so you don't need\nto enter the path every time the program starts.", result.toString());
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }
+        //todo change error msg
+        return new OperationResult(-2, "service exception", result.toString());
     }
 
     @Override
     public List<Pkg> loadInstalledPkges() {
-        ProcessBuilder builder = createCommand("./vcpkg/vcpkg list");
+        ProcessBuilder builder = createCommand(path + " list");
         List<Pkg> pkges = new ArrayList<>();
         try {
             Process process = builder.start();
@@ -79,7 +81,7 @@ public class VcpkgServiceImpl implements VcpkgService {
      */
     @Override
     public OperationResult installPkg(String name) {
-        ProcessBuilder builder = createCommand("./vcpkg/vcpkg install " + name);
+        ProcessBuilder builder = createCommand(path + " install " + name);
         StringBuilder result = new StringBuilder("Exception in service.");
         int exitCode = -2;
         try {
@@ -115,7 +117,7 @@ public class VcpkgServiceImpl implements VcpkgService {
      */
     @Override
     public OperationResult removePkg(String name) {
-        ProcessBuilder builder = createCommand("./vcpkg/vcpkg remove " + name);
+        ProcessBuilder builder = createCommand(path + " remove " + name);
         StringBuilder result = new StringBuilder("Exception in service.");
         int exitCode = -2;
         try {
@@ -151,7 +153,7 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     @Override
     public OperationResult removePkgRecursively(String name) {
-        ProcessBuilder builder = createCommand("./vcpkg/vcpkg remove --recurse " + name);
+        ProcessBuilder builder = createCommand(path + " remove --recurse " + name);
         StringBuilder result = new StringBuilder("Exception in service.");
         int exitCode = -2;
         try {
