@@ -5,6 +5,7 @@ import mm.OperationResult;
 import mm.VcpkgServiceImpl;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class VcpkgCaller {
     static void vcpkgCall(OperationResult result, JLabel processLabel, JFrame frame) {
@@ -13,9 +14,14 @@ public class VcpkgCaller {
                 processLabel.setText("");
                 if (result.exitCode != 0) {
                     if (result.exitCode == -3) {
+                        JTextArea textArea = new JTextArea(result.result, 10, 50);
+                        textArea.setEditable(false);
+                        JScrollPane sp = new JScrollPane(textArea);
+                        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
                         Object[] options = {"Proceed", "Cancel"};
                         int n = JOptionPane.showOptionDialog(frame,
-                                result.result,
+                                sp,
                                 "vcpkg recursive action needed",
                                 JOptionPane.OK_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE,
