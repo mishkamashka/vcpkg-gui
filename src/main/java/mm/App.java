@@ -107,13 +107,6 @@ public class App {
     }
 
     public static void updateTablePanel() {
-        if (service.getPath().equals("")) {
-            pathField.setEditable(true);
-            pathButton.setText("ok");
-            mainFrame.setVisible(true);
-            JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
-            return;
-        }
 
         List<Pkg> list = service.loadInstalledPkges();
         Object[][] data = new Object[list.size()][3];
@@ -218,6 +211,8 @@ public class App {
         pathField.setMaximumSize(new Dimension(300, 20));
         pathPanel.add(pathField);
 
+
+        //todo listen to enter when it's "ok"
         pathButton = new JButton("edit");
         pathButton.addActionListener(new SetPathButtonListener(mainFrame, pathButton, pathField, service));
         pathButton.setFocusPainted(false);
@@ -245,6 +240,14 @@ public class App {
         processLabel.setHorizontalAlignment(JLabel.CENTER);
         processLabel.setVerticalAlignment(JLabel.CENTER);
         processPanel.add(processLabel);
+
+        if (service.getPath().equals("")) {
+            pathField.setEditable(true);
+            pathButton.setText("ok");
+            mainFrame.setVisible(true);
+            JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
+        }
+
 
     }
 
