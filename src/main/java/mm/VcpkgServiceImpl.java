@@ -48,7 +48,7 @@ public class VcpkgServiceImpl implements VcpkgService {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while((line = reader.readLine()) != null) {
-                String[] columns = line.split("\\s+\\s+");  //todo too long version
+                String[] columns = line.split("\\s+\\s+");  //todo too long version, no description
                 Pkg pkg = null;
                 switch (columns.length) {
                     case 3:

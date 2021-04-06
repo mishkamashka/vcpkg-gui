@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+
 public class App {
 
     private static final VcpkgService service = new VcpkgServiceImpl();
@@ -135,6 +137,7 @@ public class App {
             table.getColumnModel().getColumn(0).setPreferredWidth(400);
             table.getColumnModel().getColumn(1).setPreferredWidth(200);
             table.getColumnModel().getColumn(2).setPreferredWidth(600);
+            table.setSelectionMode(SINGLE_SELECTION);
 
             //TODO add text wrapping for description
 //        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
