@@ -10,6 +10,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class App {
 
@@ -112,11 +113,11 @@ public class App {
 
         List<Pkg> list = service.loadInstalledPkges();
         Object[][] data = new Object[list.size()][3];
-        if (list.size() == 1 && list.get(0).name.matches("No packages are installed")) {
-            data[0] = new Object[]{"No packages are installed", "", ""};
-        }
-        for (int i = 0; i < list.size(); i++)
-            data[i] = list.get(i).toStringArray();
+        if (list.size() == 1 && Pattern.compile("No packages are installed").matcher(list.get(0).name).find()) {
+            data[0] = new Object[]{"No packages are installed. ¯\\_(⊙︿⊙)_/¯", "", ""};
+        } else
+            for (int i = 0; i < list.size(); i++)
+                data[i] = list.get(i).toStringArray();
 
         if (table != null) {
             DefaultTableModel model = new DefaultTableModel(data, columnNames);
