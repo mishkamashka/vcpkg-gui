@@ -24,6 +24,12 @@ public class RemoveButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
+        //TODO fix removing while installing in progress error (find out why it occurs at least..)
+        if (processLabel.getText().equals("Installing...")) {
+            JOptionPane.showMessageDialog(frame, "Please wait for the installation process to finish.");
+            return;
+        }
+
         //todo handle situation when several lines are selected
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1)
@@ -42,11 +48,7 @@ public class RemoveButtonListener implements ActionListener {
         if (n == 1)
             return;
 
-        //TODO fix removing while installing in progress error (find out why it occurs at least..)
-        if (processLabel.getText().equals("Installing...")) {
-            JOptionPane.showMessageDialog(frame, "Please wait for the installation process to finish.");
-            return;
-        }
+
         processLabel.setText("Removing...");
 
         Thread t = new Thread(new Runnable() {

@@ -96,9 +96,11 @@ public class App {
 
     private void showDemoLayout() {
         findVcpkg();
-        updateTablePanel();
-        addUpPanel();
+
         addPathPanel();
+        updateTablePanel();
+
+        addUpPanel();
         mainFrame.setVisible(true);
     }
 

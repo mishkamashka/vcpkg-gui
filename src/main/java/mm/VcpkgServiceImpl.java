@@ -28,7 +28,7 @@ public class VcpkgServiceImpl implements VcpkgService {
                     return new OperationResult(-1, "vcpkg is not found. Check vcpkg installation location and try again.\n" +
                             "You can as well set a VCPKG_PATH environment variable and restart the program.", vcpkgPath);
             }
-            path = result.toString();
+            setPath(result.toString());
             return new OperationResult(0, "vcpkg is successfully found.\n" +
                     "Consider setting a VCPKG_PATH environment variable so you don't need\nto enter the path every time the program starts.", result.toString());
         } catch (IOException | InterruptedException ex) {
@@ -187,11 +187,11 @@ public class VcpkgServiceImpl implements VcpkgService {
     }
 
     public String getPath() {
-        return path;
+        return (path == null) ? "" : path;
     }
 
     public void setPath(String path) {
-        //TODO check if vcpkg is there
+        //todo prbly better to set path here, not throu test from App
         this.path = path;
     }
 }
