@@ -8,7 +8,7 @@ import mm.listeners.SetPathButtonListener;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class App {
@@ -38,6 +38,8 @@ public class App {
     private static JTable table;
 
     private static JTextField pathField;
+
+    private static String[] columnNames = {"Package name", "Version", "Description"};
 
     public App() {
         prepareGUI();
@@ -99,19 +101,6 @@ public class App {
         mainFrame.setVisible(true);
     }
 
-    private static void updateTableModel() {
-        TableModel tableModel = table.getModel();
-        List<Pkg> list = service.loadInstalledPkges();
-        String[] pkg;
-        for (int i = 0; i < list.size()-1; i++) {
-            pkg = list.get(i).toStringArray();
-            tableModel.setValueAt(pkg[0], i, 0);
-            tableModel.setValueAt(pkg[1], i, 1);
-            tableModel.setValueAt(pkg[2], i, 2);
-        }
-        table.setModel(tableModel);
-    }
-
     public static void updateTablePanel() {
         if (service.getPath().equals("")) {
             pathField.setEditable(true);
@@ -120,39 +109,39 @@ public class App {
             JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
             return;
         }
-        if (table != null) {
-            updateTableModel();
-            return;
-        }
-        String[] columnNames = {"Package name", "Version", "Description"};
+
         List<Pkg> list = service.loadInstalledPkges();
         Object[][] data = new Object[list.size()][3];
-        if (list.size() == 0) {
-            data = new Object[1][3];
-            data[0] = new Object[]{"", "", ""};
+        if (list.size() == 1 && list.get(0).name.matches("No packages are installed")) {
+            data[0] = new Object[]{"No packages are installed", "", ""};
         }
         for (int i = 0; i < list.size(); i++)
             data[i] = list.get(i).toStringArray();
 
-        table = new JTable(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        table.getTableHeader().setReorderingAllowed(false);
-        table.getColumnModel().getColumn(0).setPreferredWidth(400);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(600);
+        if (table != null) {
+            DefaultTableModel model = new DefaultTableModel(data, columnNames);
+            table.setModel(model);
+        } else {
+            table = new JTable(data, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            table.getTableHeader().setReorderingAllowed(false);
+            table.getColumnModel().getColumn(0).setPreferredWidth(400);
+            table.getColumnModel().getColumn(1).setPreferredWidth(200);
+            table.getColumnModel().getColumn(2).setPreferredWidth(600);
 
-        //TODO add text wrapping for description
+            //TODO add text wrapping for description
 //        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
 
-        scrollPanel = new JScrollPane(table);
+            scrollPanel = new JScrollPane(table);
 
-        tablePanel.setLayout(new BorderLayout());
-        tablePanel.add(scrollPanel, BorderLayout.CENTER);
-        tablePanel.add(scrollPanel);
+            tablePanel.setLayout(new BorderLayout());
+            tablePanel.add(scrollPanel, BorderLayout.CENTER);
+            tablePanel.add(scrollPanel);
+        }
     }
 
     private static void addUpPanel() {

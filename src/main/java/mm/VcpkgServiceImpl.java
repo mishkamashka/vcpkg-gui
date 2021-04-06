@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 public class VcpkgServiceImpl implements VcpkgService {
 
-    boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-    private String path = "";
+    private static String path = null;
 
     @Override
     public OperationResult testVcpkgPath(String vcpkgPath){
@@ -48,7 +48,7 @@ public class VcpkgServiceImpl implements VcpkgService {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while((line = reader.readLine()) != null) {
-                String[] columns = line.split("\\s+\\s+");
+                String[] columns = line.split("\\s+\\s+");  //todo too long version
                 Pkg pkg = null;
                 switch (columns.length) {
                     case 3:
