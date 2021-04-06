@@ -1,6 +1,6 @@
 package mm.listeners;
 
-import mm.DemoLayout;
+import mm.App;
 import mm.OperationResult;
 import mm.VcpkgService;
 
@@ -26,7 +26,6 @@ public class SetPathButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (button.getText().equals("edit")) {
-//            JOptionPane.showMessageDialog(frame, path);
             field.setEditable(true);
             button.setText("ok");
         } else {
@@ -43,7 +42,7 @@ public class SetPathButtonListener implements ActionListener {
                             if (result.exitCode != 0) {
                                 JOptionPane.showMessageDialog(frame, result.result);
                             } else {
-                                DemoLayout.updateTablePanel();
+                                App.updateTablePanel();
                                 JOptionPane.showMessageDialog(frame, result.result);
                                 field.setText(result.name);
                                 field.setEditable(false);
@@ -55,8 +54,6 @@ public class SetPathButtonListener implements ActionListener {
                 }
             }, "testing vcpkg");
             t.start();
-
-            //todo check vcpkg valid path, save path in service
         }
 
     }

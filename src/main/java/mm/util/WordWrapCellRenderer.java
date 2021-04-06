@@ -21,6 +21,7 @@ public class WordWrapCellRenderer extends JTextArea implements TableCellRenderer
                 table.setRowHeight(row, getPreferredSize().height);
             }
         } catch (NullPointerException ex) {
+//            table.setRowSelectionInterval(row, row);
             System.out.println("null");
         }
         return this;

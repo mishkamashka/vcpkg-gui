@@ -1,9 +1,7 @@
 package mm.listeners;
 
-import mm.DemoLayout;
 import mm.OperationResult;
 import mm.VcpkgService;
-import mm.VcpkgServiceImpl;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,6 +23,8 @@ public class RemoveButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
+        //todo handle situation when several lines are selected
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1)
             return;

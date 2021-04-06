@@ -1,6 +1,6 @@
 package mm.listeners;
 
-import mm.DemoLayout;
+import mm.App;
 import mm.OperationResult;
 import mm.VcpkgServiceImpl;
 
@@ -32,7 +32,7 @@ public class VcpkgCaller {
                     } else
                         JOptionPane.showMessageDialog(frame, result.result);
                 } else {
-                    DemoLayout.updateTablePanel();
+                    App.updateTablePanel();
                     JOptionPane.showMessageDialog(frame, result.result);
                 }
                 frame.setVisible(true);

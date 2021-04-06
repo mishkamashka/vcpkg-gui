@@ -11,9 +11,6 @@ public class VcpkgServiceImpl implements VcpkgService {
 
     private String path = "";
 
-    //todo try to find vcpkg directory in home when started (prbly ask user to set a vcpkg_path or put vcpkg directory to home)
-
-
     @Override
     public OperationResult testVcpkgPath(String vcpkgPath){
         StringBuilder result = new StringBuilder(vcpkgPath);

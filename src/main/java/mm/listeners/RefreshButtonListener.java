@@ -1,6 +1,6 @@
 package mm.listeners;
 
-import mm.DemoLayout;
+import mm.App;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ public class RefreshButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        DemoLayout.updateTablePanel();
+        App.updateTablePanel();
         frame.setVisible(true);
     }
 }
