@@ -25,8 +25,20 @@ public class AddButtonListener implements ActionListener {
         if (name == null || name.equals(""))
             return;
 
-        //todo if some installation is already in process, advise to wait so not to kill cpu with all this building
-//        if service.isInstalling()
+        if (service.getInstallations().size() > 0) {
+            Object[] options = {"Proceed", "Cancel"};
+            int n = JOptionPane.showOptionDialog(frame,
+                    "There is another installation in progress. Having several installations at the same time may load the CPU too much." +
+                            "\nDo want to install package anyway?",
+                    "Install package",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+            if (n == 1)
+                return;
+        }
         processLabel.setText("Installing...");
 
         Thread t = new Thread(new Runnable() {

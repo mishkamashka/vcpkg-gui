@@ -215,8 +215,6 @@ public class App {
         pathField.setMaximumSize(new Dimension(300, 20));
         pathPanel.add(pathField);
 
-
-        //todo listen to enter when it's "ok"
         pathButton = new JButton("edit");
         pathButton.addActionListener(new SetPathButtonListener(mainFrame, pathButton, pathField, service));
         pathButton.setFocusPainted(false);

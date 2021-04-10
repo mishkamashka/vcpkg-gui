@@ -30,7 +30,6 @@ public class RemoveButtonListener implements ActionListener {
             return;
         }
 
-        //todo handle situation when several lines are selected
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1)
             return;

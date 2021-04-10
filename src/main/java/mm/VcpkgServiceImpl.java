@@ -89,11 +89,7 @@ public class VcpkgServiceImpl implements VcpkgService {
         try {
             Process process = builder.start();
             exitCode = process.waitFor();
-            //todo check if installation in process
-            //todo rm process label "installing" only if all installations are finished
-
             installations.remove(name);
-
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             result = new StringBuilder("");
