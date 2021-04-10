@@ -136,9 +136,6 @@ public class App {
             table.getColumnModel().getColumn(2).setPreferredWidth(600);
             table.setSelectionMode(SINGLE_SELECTION);
 
-            //TODO add text wrapping for description
-//        table.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
-
             scrollPanel = new JScrollPane(table);
 
             tablePanel.setLayout(new BorderLayout());

@@ -1,5 +1,7 @@
 package mm;
 
+import java.util.regex.Pattern;
+
 public class Pkg {
     public final String name;
     public final String version;
@@ -11,10 +13,16 @@ public class Pkg {
         this.description = "";
     }
 
-    public Pkg(String name, String description) {
+    public Pkg(String name, String field) {
         this.name = name;
-        this.version = "";
-        this.description = description;
+        if (Pattern.compile("\\d").matcher(field).find()) {
+            this.version = field;
+            this.description = "";
+        }
+        else {
+            this.description = field;
+            this.version = "";
+        }
     }
 
     public Pkg(String name, String version, String description) {

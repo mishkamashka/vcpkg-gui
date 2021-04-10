@@ -3,6 +3,7 @@ package mm;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class VcpkgServiceImpl implements VcpkgService {
 
@@ -48,7 +49,22 @@ public class VcpkgServiceImpl implements VcpkgService {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while((line = reader.readLine()) != null) {
-                String[] columns = line.split("\\s+\\s+");  //todo some two columns are separated by less than two spaces or by ...
+                String[] columns = {};
+                String[] columnsByDots = line.split("\\.\\.\\. ");
+
+                switch (columnsByDots.length) {
+                    case 1:
+                        columns = line.split("\\s+\\s+");
+                        break;
+                    case 3:
+                        break;
+                    case 2:
+                        String[] columns1 = columnsByDots[0].split("\\s+\\s+");
+                        String[] columns2 = columnsByDots[1].split("\\s+\\s+");
+                        columns = ArrayUtils.insert(0, columns2, columns1);
+                }
+
+
                 Pkg pkg = null;
                 switch (columns.length) {
                     case 3:
@@ -59,7 +75,6 @@ public class VcpkgServiceImpl implements VcpkgService {
                         break;
                     case 2:
                         pkg = new Pkg(columns[0],columns[1]);
-                        //TODO is it possible for a package to be without description? if so, need to check whether it's version or description
                 }
                 pkges.add(pkg);
             }
