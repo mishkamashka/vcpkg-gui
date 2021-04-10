@@ -1,14 +1,14 @@
 package mm;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class VcpkgServiceImpl implements VcpkgService {
 
     private static final boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
+    private static final Set<String> installations = new HashSet<>();
     private static String path = null;
 
     @Override
@@ -78,15 +78,21 @@ public class VcpkgServiceImpl implements VcpkgService {
      */
     @Override
     public OperationResult installPkg(String name) {
-        //todo if some installation is already in process, advise to wait so not to kill cpu with all this building
         ProcessBuilder builder = createCommand(path + " install " + name);
         StringBuilder result = new StringBuilder("Exception in service.");
+
         int exitCode = -2;
+
+        if (!installations.add(name))
+            return new OperationResult(exitCode, "Package " + name + " is already being installed.\nPlease wait.", name);
+
         try {
             Process process = builder.start();
             exitCode = process.waitFor();
             //todo check if installation in process
             //todo rm process label "installing" only if all installations are finished
+
+            installations.remove(name);
 
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -197,5 +203,9 @@ public class VcpkgServiceImpl implements VcpkgService {
     public void setPath(String path) {
         //todo prbly better to set path here, not through test from App
         this.path = path;
+    }
+
+    public Set<String> getInstallations() {
+        return installations;
     }
 }

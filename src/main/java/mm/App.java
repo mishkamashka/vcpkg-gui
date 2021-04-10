@@ -1,6 +1,5 @@
 package mm;
 
-import jdk.nashorn.internal.scripts.JO;
 import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
 import mm.listeners.RemoveButtonListener;
@@ -10,7 +9,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
@@ -44,6 +45,8 @@ public class App {
     private static JTextField pathField;
 
     private static String[] columnNames = {"Package name", "Version", "Description"};
+
+    //todo add "cancel installation"
 
     public App() {
         prepareGUI();

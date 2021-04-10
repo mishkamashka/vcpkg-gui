@@ -24,12 +24,15 @@ public class AddButtonListener implements ActionListener {
         String name = JOptionPane.showInputDialog(frame,"Package name to install:");
         if (name == null || name.equals(""))
             return;
+
+        //todo if some installation is already in process, advise to wait so not to kill cpu with all this building
+//        if service.isInstalling()
         processLabel.setText("Installing...");
 
         Thread t = new Thread(new Runnable() {
             public void run() {
                 OperationResult result = service.installPkg(name);
-                VcpkgCaller.vcpkgCallResultHandler(result, processLabel, frame);
+                VcpkgCaller.vcpkgCallResultHandler(result, processLabel, frame, service);
             }
         }, "installing package");
         t.start();

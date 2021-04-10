@@ -25,7 +25,7 @@ public class RemoveButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
 
         //TODO fix removing while installing in progress error (find out why it occurs at least..)
-        if (processLabel.getText().equals("Installing...")) {
+        if (service.getInstallations().size() != 0) {
             JOptionPane.showMessageDialog(frame, "Please wait for the installation process to finish.");
             return;
         }
@@ -54,9 +54,10 @@ public class RemoveButtonListener implements ActionListener {
         Thread t = new Thread(new Runnable() {
             public void run() {
                 OperationResult result = service.removePkg(name);
-                VcpkgCaller.vcpkgCallResultHandler(result, processLabel, frame);
+                VcpkgCaller.vcpkgCallResultHandler(result, processLabel, frame, service);
             }
         }, "removing package");
         t.start();
+
     }
 }
