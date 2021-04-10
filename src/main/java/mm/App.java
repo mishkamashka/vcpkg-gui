@@ -131,17 +131,15 @@ public class App {
                 }
             };
             table.getTableHeader().setReorderingAllowed(false);
-            table.getColumnModel().getColumn(0).setPreferredWidth(400);
-            table.getColumnModel().getColumn(1).setPreferredWidth(200);
-            table.getColumnModel().getColumn(2).setPreferredWidth(600);
             table.setSelectionMode(SINGLE_SELECTION);
-
             scrollPanel = new JScrollPane(table);
-
             tablePanel.setLayout(new BorderLayout());
             tablePanel.add(scrollPanel, BorderLayout.CENTER);
             tablePanel.add(scrollPanel);
         }
+        table.getColumnModel().getColumn(0).setPreferredWidth(400);
+        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(2).setPreferredWidth(600);
     }
 
     private static void addUpPanel() {
