@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class VcpkgServiceImpl implements VcpkgService {
 
-    private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    private static final boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
     private static String path = null;
 
@@ -48,7 +48,7 @@ public class VcpkgServiceImpl implements VcpkgService {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while((line = reader.readLine()) != null) {
-                String[] columns = line.split("\\s+\\s+");  //todo too long version, no description
+                String[] columns = line.split("\\s+\\s+");  //todo some two columns are separated by less than two spaces or by ...
                 Pkg pkg = null;
                 switch (columns.length) {
                     case 3:
@@ -78,12 +78,16 @@ public class VcpkgServiceImpl implements VcpkgService {
      */
     @Override
     public OperationResult installPkg(String name) {
+        //todo if some installation is already in process, advise to wait so not to kill cpu with all this building
         ProcessBuilder builder = createCommand(path + " install " + name);
         StringBuilder result = new StringBuilder("Exception in service.");
         int exitCode = -2;
         try {
             Process process = builder.start();
             exitCode = process.waitFor();
+            //todo check if installation in process
+            //todo rm process label "installing" only if all installations are finished
+
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             result = new StringBuilder("");
@@ -191,7 +195,7 @@ public class VcpkgServiceImpl implements VcpkgService {
     }
 
     public void setPath(String path) {
-        //todo prbly better to set path here, not throu test from App
+        //todo prbly better to set path here, not through test from App
         this.path = path;
     }
 }

@@ -1,5 +1,6 @@
 package mm;
 
+import jdk.nashorn.internal.scripts.JO;
 import mm.listeners.AddButtonListener;
 import mm.listeners.RefreshButtonListener;
 import mm.listeners.RemoveButtonListener;
@@ -155,7 +156,7 @@ public class App {
         headerLabel = new JLabel("INSTALLED PACKAGES");
         refreshButton = new JButton("↻");
         refreshButton.setFocusPainted(false);
-        refreshButton.addActionListener(new RefreshButtonListener(mainFrame));
+        refreshButton.addActionListener(new RefreshButtonListener());
 
         headerPanel.add(headerLabel);
         headerPanel.add(refreshButton);
@@ -244,7 +245,9 @@ public class App {
         if (service.getPath().equals("")) {
             pathField.setEditable(true);
             pathButton.setText("ok");
+            mainFrame.getRootPane().setDefaultButton(pathButton);
             mainFrame.setVisible(true);
+            //todo stuck on close this dialog
             JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
         }
 
@@ -256,5 +259,22 @@ public class App {
         if (env == null)
             return;
         service.testVcpkgPath(env);
+    }
+
+    public static void updatePathElements(String fieldText, boolean isPathEditable, String buttonText){
+        if (!fieldText.equals(""))
+            pathField.setText(fieldText);
+        pathField.setEditable(isPathEditable);
+        if (buttonText.equals("ok")) {
+            pathButton.setText(buttonText);
+            mainFrame.getRootPane().setDefaultButton(pathButton);
+        } else {
+            pathButton.setText(buttonText);
+            mainFrame.getRootPane().setDefaultButton(refreshButton);
+        }
+    }
+
+    public static void updateProcessLabel(String text) {
+        processLabel.setText(text);
     }
 }

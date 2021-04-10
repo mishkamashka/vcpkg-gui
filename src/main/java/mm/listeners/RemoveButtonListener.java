@@ -54,7 +54,7 @@ public class RemoveButtonListener implements ActionListener {
         Thread t = new Thread(new Runnable() {
             public void run() {
                 OperationResult result = service.removePkg(name);
-                VcpkgCaller.vcpkgCall(result, processLabel, frame);
+                VcpkgCaller.vcpkgCallResultHandler(result, processLabel, frame);
             }
         }, "removing package");
         t.start();

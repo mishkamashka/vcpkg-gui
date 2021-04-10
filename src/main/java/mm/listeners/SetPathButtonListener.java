@@ -11,12 +11,12 @@ import java.awt.event.ActionListener;
 
 public class SetPathButtonListener implements ActionListener {
 
-    private Frame frame;
+    private JFrame frame;
     private JTextField field;
     private JButton button;
     private VcpkgService service;
 
-    public SetPathButtonListener(Frame frame, JButton button, JTextField field, VcpkgService service) {
+    public SetPathButtonListener(JFrame frame, JButton button, JTextField field, VcpkgService service) {
         this.frame = frame;
         this.field = field;
         this.button = button;
@@ -26,17 +26,12 @@ public class SetPathButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (button.getText().equals("edit")) {
-            field.setEditable(true);
-            button.setText("ok");
+            App.updatePathElements("", true, "ok");
         } else {
-
-            String s = field.getText();
-
-            System.out.println(s);
-
+            String path = field.getText();
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    OperationResult result = service.testVcpkgPath(s);
+                    OperationResult result = service.testVcpkgPath(path);
                     SwingUtilities.invokeLater(new Runnable(){
                         public void run() {
                             if (result.exitCode != 0) {
@@ -44,17 +39,13 @@ public class SetPathButtonListener implements ActionListener {
                             } else {
                                 App.updateTablePanel();
                                 JOptionPane.showMessageDialog(frame, result.result);
-                                field.setText(result.name);
-                                field.setEditable(false);
-                                button.setText("edit");
+                                App.updatePathElements(result.name, false, "edit");
                             }
-                            frame.setVisible(true);
                         }
                     });
                 }
             }, "testing vcpkg");
             t.start();
         }
-
     }
 }
