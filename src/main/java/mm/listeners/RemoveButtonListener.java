@@ -44,9 +44,8 @@ public class RemoveButtonListener implements ActionListener {
                 null,
                 options,
                 options[1]);
-        if (n == 1)
+        if (n == 1 || n == -1)
             return;
-
 
         processLabel.setText("Removing...");
 

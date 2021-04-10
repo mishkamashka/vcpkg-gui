@@ -245,11 +245,17 @@ public class App {
             pathButton.setText("ok");
             mainFrame.getRootPane().setDefaultButton(pathButton);
             mainFrame.setVisible(true);
-            //todo stuck on close this dialog
-            JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
+
+            Object[] options = {"OK"};
+            JOptionPane.showOptionDialog(mainFrame,
+                    "VCPKG_PATH not set, enter vcpkg path please",
+                    "vcpkg-gui",
+                    JOptionPane.OK_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
         }
-
-
     }
 
     private static void findVcpkg() {
@@ -259,7 +265,7 @@ public class App {
         service.testVcpkgPath(env);
     }
 
-    public static void updatePathElements(String fieldText, boolean isPathEditable, String buttonText){
+    public static void updatePathElements(String fieldText, boolean isPathEditable, String buttonText) {
         if (!fieldText.equals(""))
             pathField.setText(fieldText);
         pathField.setEditable(isPathEditable);
