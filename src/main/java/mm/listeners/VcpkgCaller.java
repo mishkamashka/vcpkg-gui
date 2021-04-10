@@ -34,8 +34,10 @@ public class VcpkgCaller {
                         if (n == 0) {
                             OperationResult result1 = new VcpkgServiceImpl().removePkgRecursively(result.name);
                             VcpkgCaller.vcpkgCallResultHandler(result1, processLabel, frame, service);
-                        } else
+                        } else {
+                            App.updateProcessLabel("");
                             return;
+                        }
                     } else {
                         textArea = new JTextArea(result.result, 10, 50);
                         textArea.setEditable(false);
