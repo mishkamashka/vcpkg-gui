@@ -246,15 +246,13 @@ public class App {
             mainFrame.getRootPane().setDefaultButton(pathButton);
             mainFrame.setVisible(true);
 
-            Object[] options = {"OK"};
-            JOptionPane.showOptionDialog(mainFrame,
-                    "VCPKG_PATH not set, enter vcpkg path please",
-                    "vcpkg-gui",
-                    JOptionPane.OK_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+            // that is really weird but it works. otherwise main window stuck from clicking out of popup
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane.showMessageDialog(mainFrame, "VCPKG_PATH not set, enter vcpkg path please");
+                }
+            });
         }
     }
 
