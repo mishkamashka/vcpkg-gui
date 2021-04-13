@@ -1,6 +1,8 @@
 # vcpkg-gui
 GUI app for [vcpkg](https://github.com/microsoft/vcpkg) package manager. GUI provides simple operations: view all installed vcpkg packages, install/remove a package.
 
+*tested mostly on linux for now*
+
 ## Download and build
 
 ```
